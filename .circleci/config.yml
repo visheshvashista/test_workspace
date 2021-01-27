@@ -12,6 +12,10 @@ jobs:
           command: |
             pip install awscli 
       - run:
+          name: Add Curl 
+          command: |
+            apt install curl
+      - run:
           name: Get DNS Name
           command: |
             aws ec2 describe-instances \
@@ -25,16 +29,6 @@ jobs:
             cat dns.txt
             DNS=`cat dns.txt`
             echo $DNS
-      - run:
-          name: save DNS name in MemStash
-          command: |
-            curl -H "Content-Type: text/plain" -H "token: vv-udapeople-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$dns" https://api.memstash.io/values/BackEndDNS
-            
-      - run:
-          name: get DNS name from MemStash
-          command: |
-            curl -H "token: vv-udapeople-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BackEndDNS
-
                       
 workflows:
   default:
