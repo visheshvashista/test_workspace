@@ -4,8 +4,13 @@ version: 2.1
 jobs: 
   get_dns:
     docker:
-      - image: amazon/aws-cli
-    steps:         
+      - image: python:3.7-alpine3.11
+    steps:        
+      - checkout
+      - run:
+          name: Add AWS CLI
+          command: |
+            pip install awscli 
       - run:
           name: Get DNS Name
           command: |
