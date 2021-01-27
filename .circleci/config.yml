@@ -4,22 +4,23 @@ version: 2.1
 jobs: 
   get_dns:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: amazon/aws-cli
     steps:         
-      - run: 
-          name: Add AWS CLI
-          command: |
-            pip install awscli
-
       - run:
           name: Get DNS Name
           command: |
-            aws ec2 describe-instances  \
-            --query 'Reservations[*].Instances[*].PublicDNSName' \
-            --output text > dns.txt
-            cat dns.txt
-            DNS=`cat dns.txt`
-            echo $DNS
+            aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicDNSName' --output text > dns.txt
+      - run:
+          name: Get DNS Name
+          command: |
+            ls -lrt
+
+      
+           # cat dns.txt
+
+
+            #DNS=`cat dns.txt`
+            #echo $DNS
                       
 workflows:
   default:
