@@ -9,7 +9,15 @@ jobs:
       - run:
           name: Get DNS Name
           command: |
-            aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicDNSName' --output text > dns.txt
+            aws ec2 describe-instances \
+             --query 'Reservations[*].Instances[*].PublicDNSName' \
+             --output text > dns.txt
+      - run:
+          name: Get DNS Name
+          command: |
+            aws ec2 describe-instances \
+             --query 'Reservations[*].Instances[*].PublicDNSName' \
+             --output text 
       - run:
           name: Get DNS Name
           command: |
