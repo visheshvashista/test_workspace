@@ -4,7 +4,7 @@ version: 2.1
 jobs: 
   get_dns:
     docker:
-      - image: cimg/python
+      - image: cimg/python:3.9.1-node 
     steps:        
       - checkout
       - run:
@@ -14,7 +14,11 @@ jobs:
       - run:
           name: Add Curl 
           command: |
-            apt-get curl
+            uname -a
+      - run:
+          name: Add Curl 
+          command: |
+            sudo apt install curl
       - run:
           name: Get DNS Name
           command: |
