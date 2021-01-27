@@ -2,41 +2,18 @@
 version: 2.1
 # Use a package of configuration called an orb.
 jobs: 
-  create_inventory:
-    working_directory: ~/project
+  get_dns:
     docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - checkout  
+      - image: amazon/aws-cli
+    steps:         
       - run:
-          name: Add back-end ip to ansible inventory
+          name: Get DNS Name
           command: |
-             echo pwd           
-      - run:
-          name: Add back-end ip to ansible inventory
-          command: |
-             echo "[all]" > .circleci/inventory.txt
+            aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicDNSName' --output text > dns.txt
+            DNS=`cat dns.txt`
+            echo $DNS
                       
-      - persist_to_workspace:
-          root: ~/project
-          paths: 
-            - .circleci/inventory.txt
-              
-  check_inventory:
-    working_directory: ~/project
-    docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - checkout            
-      - attach_workspace:
-          at: ~/project
-      - run:
-          name: Check inventory file exists
-          command: |
-            cat ./.circleci/inventory.txt
-
 workflows:
   default:
     jobs:
-      - create_inventory
-      - check_inventory
+      - get_dns
