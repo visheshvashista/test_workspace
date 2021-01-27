@@ -10,6 +10,7 @@ jobs:
           name: Get DNS Name
           command: |
             aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicDNSName' --output text > dns.txt
+            cat dns.txt
             DNS=`cat dns.txt`
             echo $DNS
                       
