@@ -15,13 +15,13 @@ jobs:
           name: Get DNS Name
           command: |
             aws ec2 describe-instances \
-             --query 'Reservations[*].Instances[*].PublicDNSName' \
+             --query 'Reservations[*].Instances[*].PublicDnsName' \
              --output text > dns.txt
       - run:
           name: Get DNS Name
           command: |
             aws ec2 describe-instances \
-             --query 'Reservations[*].Instances[*].PublicDNSName' \
+             --query 'Reservations[*].Instances[*].PublicDnsName' \
              --output text 
       - run:
           name: Get DNS Name
