@@ -20,20 +20,11 @@ jobs:
       - run:
           name: Get DNS Name
           command: |
-            aws ec2 describe-instances \
-             --query 'Reservations[*].Instances[*].PublicDnsName' \
-             --output text 
-      - run:
-          name: Get DNS Name
-          command: |
-            ls -lrt
-
-      
-           # cat dns.txt
-
-
-            #DNS=`cat dns.txt`
-            #echo $DNS
+            dns="$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --output text)"  
+            echo $dns
+            cat dns.txt
+            DNS=`cat dns.txt`
+            echo $DNS
                       
 workflows:
   default:
