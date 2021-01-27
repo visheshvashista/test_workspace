@@ -14,7 +14,7 @@ jobs:
       - run:
           name: Add Curl 
           command: |
-            apt install curl
+            uname -a
       - run:
           name: Get DNS Name
           command: |
