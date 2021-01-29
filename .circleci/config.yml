@@ -24,17 +24,17 @@ jobs:
           command: |
             aws ec2 describe-instances \
              --query 'Reservations[*].Instances[*].PublicDnsName' \
-             --output text > dns.txt
+             --output text  > dns.txt
       - run:
           name: Set  Memstash
           command: |
             dns="$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --output text)"  
             echo $dns
-            curl -H "Content-Type: text/plain" -H "token: vv-udapeople-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$dns" https://api.memstash.io/values/BackEndDNS
+            curl -H "Content-Type: text/plain" -H "token: vvv-udapeople-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$dns" https://api.memstash.io/values/BackEndDNS
       - run:
           name: Get DNS from MemStash
           command: |
-            curl -H "token: vv-udapeople-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BackEndDNS     
+            curl -H "token: vvv-udapeople-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/BackEndDNS     
                       
 workflows:
   default:
