@@ -15,8 +15,11 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory and upload dnsname to memstash
           command: |
-               test=test1
-               echo $test
+               key1=test1
+               echo $key1
+               echo test2 > inventory.txt
+               key2=$(cat inventory.txt)
+               echo $key2
 workflows:
   default:
     jobs:
