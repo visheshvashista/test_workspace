@@ -5,7 +5,7 @@ version: 2.1
 jobs:
   check_curl:
     docker:
-      - image: alpine3.11
+      - image: cimg/base:2020.01
     steps:
       - checkout 
       - run:
