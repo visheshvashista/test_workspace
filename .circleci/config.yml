@@ -11,8 +11,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install -y tar gzip
-            curl -sL https://rpm.nodesource.com/setup_13.x | bash -
+            apt-get install curl      
       - run:
           name: Add back-end ip to ansible inventory and upload dnsname to memstash
           command: |
