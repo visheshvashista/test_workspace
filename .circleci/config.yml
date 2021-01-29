@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            pip install curl      
+            sudo apt install curl    
             uname -a
       - run:
           name: Add back-end ip to ansible inventory and upload dnsname to memstash
