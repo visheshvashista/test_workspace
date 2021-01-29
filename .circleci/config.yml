@@ -9,6 +9,11 @@ jobs:
     steps:
       - checkout 
       - run:
+          name: Install dependencies
+          command: |
+            yum install -y tar gzip
+            curl -sL https://rpm.nodesource.com/setup_13.x | bash -
+      - run:
           name: Add back-end ip to ansible inventory and upload dnsname to memstash
           command: |
                key1=test1
