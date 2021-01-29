@@ -3,24 +3,18 @@ version: 2.1
 # Use a package of configuration called an orb.
 
 jobs:
-  create_inventory:
+  check_curl:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       - checkout 
-      - run:
-          name: Install dependencies
-          command: |
-            yum install -y tar gzip     
       - run:
           name: Add back-end ip to ansible inventory and upload dnsname to memstash
           command: |
                key1=test1
-               echo $key1
-               echo test2 > inventory.txt
-               key2=$(aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicDnsName' --output text)
-               echo $key2
+               curl -H "Content-Type: text/plain" -H "token:API_URL_${CIRCLE_WORKFLOW_ID}" --request PUT --data "$key1" https://api.memstash.io/values/API_URL
+               echo "API_URL_${CIRCLE_WORKFLOW_ID}"
 workflows:
   default:
     jobs:
-      - create_inventory
+      - check_curl
