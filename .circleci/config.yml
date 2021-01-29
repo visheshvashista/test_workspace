@@ -18,7 +18,7 @@ jobs:
                key1=test1
                echo $key1
                echo test2 > inventory.txt
-               key2=$(cat inventory.txt)
+               key2=$(aws ec2 describe-instances  --query 'Reservations[*].Instances[*].PublicDNSName' --output text)
                echo $key2
 workflows:
   default:
