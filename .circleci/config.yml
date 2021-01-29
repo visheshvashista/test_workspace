@@ -3,23 +3,27 @@ version: 2.1
 # Use a package of configuration called an orb.
 
 jobs:
-  check_curl:
+  smoke_test:
     docker:
       - image: cimg/base:2020.01
     steps:
-      - checkout 
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Install dependencies
           command: |
-            sudo apt install curl    
-            uname -a
-      - run:
-          name: Add back-end ip to ansible inventory and upload dnsname to memstash
-          command: |
-               key1=test1
-               curl -H "Content-Type: text/plain" -H "token:API_URL_${CIRCLE_WORKFLOW_ID}" --request PUT --data "$key1" https://api.memstash.io/values/API_URL
-               echo "API_URL_${CIRCLE_WORKFLOW_ID}"
+            sudo apt install curl
+            curl -sL https://deb.nodesource.com/setup_13.x | sudo bash -
+            sudo apt-get install -y nodejs
+            which curl
+            which node
+            sudo apt install awscli
+            which aws
+            
 workflows:
   default:
     jobs:
-      - check_curl
+      - smoke_test
+
+
