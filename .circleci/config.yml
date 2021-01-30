@@ -18,14 +18,16 @@ jobs:
             sudo apt install curl
             which curl
             export URL="http://udapeople-03a251f6-1c4c-401e-8818-79047eff04fa.s3-website-us-west-2.amazonaws.com"
-            curl -s $URL > curl_frontend_output1.txt
-            cat curl_frontend_output1.txt
+            curl -s $URL -o curl_frontend_output1.txt
+            $(cat curl_frontend_page1.txt)
             echo "Frontend URL: $URL"
+            
             curl -s ${URL} > curl_frontend_output.txt
             if [[ $(cat curl_frontend_page.txt) =~ "Welcome" ]]
             then
               exit 0
             else
+              echo "Vishesh"
               exit 1
             fi
 workflows:
