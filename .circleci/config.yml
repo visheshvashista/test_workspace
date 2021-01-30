@@ -36,5 +36,8 @@ workflows:
   default:
     jobs:
       - cloudfront-update
+        filters:  # using regex filters requires the entire branch to match
+          branches:
+            only: main
 
 
