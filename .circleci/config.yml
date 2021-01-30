@@ -3,37 +3,37 @@ version: 2.1
 # Use a package of configuration called an orb.
 
 jobs:
-  smoke_test:
+  cloudfront-update:
     docker:
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
       - run:
-          name: Install dependencies
+          name: Update cloudfront distribution
           command: |
-            sudo apt-get update
-            sudo apt-get install awscli
-            sudo apt install curl
-            which curl
-            export URL="http://udapeople-03a251f6-1c4c-401e-8818-79047eff04fa.s3-website-us-west-2.amazonaws.com"
-            curl -s $URL -o curl_frontend_output1.txt
-            ls -lrt
-            cat curl_frontend_output1.txt
-            echo "Frontend URL: $URL"
+            export OldWorkflowID=$(aws cloudformation \
+            list-exports --query "Exports[?Name==\`WorkflowID`}.Value" \
+            --no-paginate --output text)
+            export STACKS=($aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+            --stack-status-filter CREATE_COMPLETE --no-paginate --output-text))
             
-            curl -s ${URL} > curl_frontend_output.txt
-            if [[ $(curl -s ${URL} | grep  "Welcome") ]]
+            echo Old Workflow Id: "${OldWorkflowID}"
+
+            aws cloudformation deploy \
+            --template-file .circleci/files/cloudfront.yml
+            --stack-name=udapeople-cloudfront \
+            --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID}" \
+            --tags project=udapeople &
+
+            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              exit 0
-            else
-              echo "Vishesh"
-              exit 1
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+              aws cloudformation delete-stack --stack-name "udapeople-backendstack-${OldWorkflowID}"
+              aws cloudformation delete-stack --stack-name "udapeople-frontendstack-${OldWorkflowID}"
             fi
 workflows:
   default:
     jobs:
-      - smoke_test
+      - cloudfront-update
 
 
