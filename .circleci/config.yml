@@ -24,7 +24,7 @@ jobs:
             echo "Frontend URL: $URL"
             
             curl -s ${URL} > curl_frontend_output.txt
-            if [[ curl -s ${URL} | grep  "Welcome" ]]
+            if [[ $(curl -s ${URL} | grep  "Welcome") ]]
             then
               exit 0
             else
